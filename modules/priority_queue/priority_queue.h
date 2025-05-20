@@ -23,7 +23,8 @@ class PriorityQueue : public RefCounted
 		int priority;
 		Node* next;
 
-		Node (Variant avalue, int apriority) : value(avalue), priority(apriority), next(nullptr) {}
+		Node (Variant p_value, int p_priority = 0) : value(p_value), priority(p_priority), next(nullptr) {}
+		Node(Variant&& p_value, int p_priority = 0) : value(std::move(p_value)), priority(p_priority), next(nullptr) {}
 	};
 
 	Node* _head;
@@ -34,17 +35,18 @@ protected:
 	static void _bind_methods();
 
 public:
-	void push(Variant p_value, int p_priority = 0); // Add a new item to the queue
-	//void push(Variant&& value, int priority);
+	void push(Variant p_value, int p_priority); // Add a new item to the queue
 	Variant pop(); // Remove and return the highest-priority item
 	Variant peek() const; // View the highest-priority item without removing it
+	Variant get(const Variant& p_value) const; // Gets an item from the Queue 
+	int find_position(const Variant& p_value) const; // Finds the position of an item, if it is found in the Queue
 	bool is_empty() const; // Check if the queue is empty
 	void clear(); // Remove all items from the queue
 	int size() const; // Get the current size of the queue
+
+	void print_list() const;
 
 	PriorityQueue();
 	PriorityQueue(std::initializer_list<QueuePair> p_init);
 	~PriorityQueue();
 };
-
-// Todo add it to variant.h types
