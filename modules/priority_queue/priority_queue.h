@@ -38,7 +38,8 @@ public:
 	void push(Variant p_value, int p_priority); // Add a new item to the queue
 	Variant pop(); // Remove and return the highest-priority item
 	Variant peek() const; // View the highest-priority item without removing it
-	Variant get(const Variant& p_value) const; // Gets an item from the Queue 
+	Variant get_item(const Variant& p_value) const; // Gets an item from the Queue
+	Variant remove(const Variant& p_value); // Gets an item from the Queue
 	int find_position(const Variant& p_value) const; // Finds the position of an item, if it is found in the Queue
 	bool is_empty() const; // Check if the queue is empty
 	void clear(); // Remove all items from the queue

@@ -53,7 +53,7 @@ Variant PriorityQueue::peek() const
 	return _head->value;
 }
 
-Variant PriorityQueue::get(const Variant& p_value) const
+Variant PriorityQueue::get_item(const Variant& p_value) const
 {
 	Node* current = _head;
 
@@ -66,6 +66,35 @@ Variant PriorityQueue::get(const Variant& p_value) const
 		current = current->next;
 	}
 	return Variant();
+}
+
+Variant PriorityQueue::remove(const Variant& p_value)
+{
+	Node* current = _head;
+	Node* previous = nullptr;
+
+	while (current)
+	{
+		if (current->value == p_value)
+		{
+			if (previous)
+			{
+				previous->next = current->next; // Unlink the node
+			}
+			else
+			{
+				_head = current->next; // If it's the head, update _head
+			}
+
+			Variant removed_value = current->value;
+			return removed_value; // Return removed value
+		}
+
+		previous = current;
+		current = current->next;
+	}
+
+	return Variant(); // Item not found
 }
 
 int PriorityQueue::find_position(const Variant& p_value) const
@@ -126,6 +155,8 @@ void PriorityQueue::_bind_methods()
 	ClassDB::bind_method(D_METHOD("push", "value", "priority"), &PriorityQueue::push);
 	ClassDB::bind_method(D_METHOD("pop"), &PriorityQueue::pop);
 	ClassDB::bind_method(D_METHOD("peek"), &PriorityQueue::peek);
+	ClassDB::bind_method(D_METHOD("get_item", "value"), &PriorityQueue::get_item);
+	ClassDB::bind_method(D_METHOD("remove", "value"), &PriorityQueue::remove);
 	ClassDB::bind_method(D_METHOD("find_position", "value"), &PriorityQueue::find_position);
 	ClassDB::bind_method(D_METHOD("is_empty"), &PriorityQueue::is_empty);
 	ClassDB::bind_method(D_METHOD("clear"), &PriorityQueue::clear);
