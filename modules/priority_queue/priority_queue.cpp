@@ -88,7 +88,7 @@ Variant PriorityQueue::remove(const Variant& p_value)
 				_head = current->next; // If it's the head, update _head
 			}
 
-			Variant removed_value = current->value;
+			Variant removed_value = std::move(current->value);
 
 			delete_node(current);
 			return removed_value; // Return removed value
