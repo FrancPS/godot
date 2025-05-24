@@ -15,7 +15,7 @@ void PriorityQueue::push(Variant p_value, int p_priority)
 	}
 
 	Node* prev_node = _head;
-	while (prev_node->next && n->priority > prev_node->priority)
+	while (prev_node->next && n->priority >= prev_node->priority)
 	{
 		prev_node = prev_node->next;
 	}
