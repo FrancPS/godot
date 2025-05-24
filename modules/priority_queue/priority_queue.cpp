@@ -38,6 +38,8 @@ Variant PriorityQueue::pop()
 	Variant value = std::move(head->value);
 	_head = _head->next;
 
+	delete_node(head);
+
 	num_elements--;
 
 	return value;
@@ -87,6 +89,8 @@ Variant PriorityQueue::remove(const Variant& p_value)
 			}
 
 			Variant removed_value = current->value;
+
+			delete_node(current);
 			return removed_value; // Return removed value
 		}
 
@@ -122,8 +126,12 @@ bool PriorityQueue::is_empty() const
 
 void PriorityQueue::clear()
 {
-	// No need to manually delete `current->value`, since its a Variant type — let Godot handle it
-	_head = nullptr;
+	while (_head)
+	{
+		Node* temp = _head;
+		_head = _head->next;
+		delete_node(temp);
+	}
 	num_elements = 0;
 }
 
@@ -181,4 +189,10 @@ PriorityQueue::PriorityQueue(std::initializer_list<QueuePair> p_init)
 PriorityQueue::~PriorityQueue()
 {
 	clear();
+}
+
+void PriorityQueue::delete_node(Node* node)
+{
+	node->next = nullptr;
+	delete node;
 }
