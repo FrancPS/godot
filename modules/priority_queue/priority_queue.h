@@ -13,9 +13,9 @@ struct QueuePair
 	int priority;
 };
 
-class PriorityQueue : public Object
+class PriorityQueue : public RefCounted
 {
-	GDCLASS(PriorityQueue, Object);
+	GDCLASS(PriorityQueue, RefCounted);
 	
 	struct Node
 	{

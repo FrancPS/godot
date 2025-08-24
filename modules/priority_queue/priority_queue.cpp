@@ -7,23 +7,30 @@
 void PriorityQueue::push(Variant p_value, int p_priority)
 {
 	Node* n = memnew(Node(p_value, p_priority));
+	num_elements++;
 
 	if (!_head) {
 		_head = n;
-		num_elements++;
 		return;
 	}
 
-	Node* prev_node = _head;
-	while (prev_node->next && n->priority >= prev_node->priority)
+	Node* curr_node = _head;
+	Node* prev_node = nullptr;
+	while (curr_node && n->priority >= curr_node->priority)
 	{
-		prev_node = prev_node->next;
+		prev_node = curr_node;
+		curr_node = curr_node->next;
 	}
 
-	n->next = prev_node->next;
-	prev_node->next = n;
-
-	num_elements++;
+	if (prev_node)
+	{
+		prev_node->next = n;
+	}
+	else
+	{
+		_head = n;
+	}
+	n->next = curr_node;
 }
 
 Variant PriorityQueue::pop()
@@ -88,9 +95,8 @@ Variant PriorityQueue::remove(const Variant& p_value)
 				_head = current->next; // If it's the head, update _head
 			}
 
-			Variant removed_value = std::move(current->value);
+			Variant removed_value = current->value;
 
-			delete_node(current);
 			return removed_value; // Return removed value
 		}
 
